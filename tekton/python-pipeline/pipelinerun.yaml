@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: python-app-run-
+  namespace: ci-cd
+spec:
+  taskRunTemplate:
+    serviceAccountName: tekton-sa
+  pipelineRef:
+    name: python-app-pipeline
+  params:
+    - name: repo-url
+      value: https://github.com/sonujha78/python-app.git
+    - name: image-name
+      value: 192.168.49.1:8081/library/python-app:v2.0
+  workspaces:
+    - name: shared-workspace
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
