@@ -1,0 +1,34 @@
+replicaCount: 2
+image:
+  repository: 192.168.49.1:8081/library/angular-app
+  pullPolicy: Always
+  tag: "v1.0"
+imagePullSecrets:
+  - name: harbor-dc-creds
+serviceAccount:
+  create: false
+  name: ""
+podAnnotations: {}
+service:
+  type: NodePort
+  port: 80
+  targetPort: 80
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+livenessProbe:
+  httpGet:
+    path: /
+    port: 80
+readinessProbe:
+  httpGet:
+    path: /
+    port: 80
+autoscaling:
+  enabled: false
+ingress:
+  enabled: false
