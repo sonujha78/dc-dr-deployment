@@ -1,0 +1,37 @@
+replicaCount: 2
+
+image:
+  repository: 192.168.58.1:8082/library/python-app
+  pullPolicy: Always
+  tag: "v2.0"
+
+imagePullSecrets:
+  - name: harbor-dr-creds
+
+service:
+  type: NodePort
+  port: 5000
+  targetPort: 5000
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 5000
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 5000
+
+autoscaling:
+  enabled: false
+
+ingress:
+  enabled: false
