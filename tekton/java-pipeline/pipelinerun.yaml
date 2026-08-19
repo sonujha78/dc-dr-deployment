@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: java-app-run-
+  namespace: ci-cd
+spec:
+  taskRunTemplate:
+    serviceAccountName: tekton-sa
+  pipelineRef:
+    name: java-app-pipeline
+  params:
+    - name: repo-url
+      value: https://github.com/sonujha78/java-app.git
+    - name: image-name
+      value: 192.168.49.1:8081/library/java-app:v1.0
+  workspaces:
+    - name: shared-workspace
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi

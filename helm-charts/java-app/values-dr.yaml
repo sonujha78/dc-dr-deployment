@@ -1,0 +1,39 @@
+replicaCount: 2
+
+image:
+  repository: 192.168.58.1:8082/library/java-app
+  pullPolicy: Always
+  tag: "v1.0"
+
+imagePullSecrets:
+  - name: harbor-dr-creds
+
+service:
+  type: NodePort
+  port: 8080
+  targetPort: 8080
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 200m
+    memory: 256Mi
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 8080
+  initialDelaySeconds: 30
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 8080
+  initialDelaySeconds: 20
+
+autoscaling:
+  enabled: false
+
+ingress:
+  enabled: false
