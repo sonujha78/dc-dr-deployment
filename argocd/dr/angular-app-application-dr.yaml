@@ -9,6 +9,9 @@ spec:
     repoURL: https://github.com/sonujha78/dc-dr-deployment.git
     targetRevision: main
     path: helm-charts/angular-app
+    helm:
+      valueFiles:
+        - values-dr.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: ci-cd
